@@ -94,7 +94,8 @@ private let configParser: [String: any ParserProtocol<Config>] = [
 
     "start-at-login": Parser(\.startAtLogin, parseBool),
     "accordion-padding": Parser(\.accordionPadding, parseInt),
-    "exec-on-workspace-change": Parser(\.execOnWorkspaceChange, parseExecOnWorkspaceChange),
+    "exec-on-workspace-change": Parser(\.execOnWorkspaceChange, parseExecList),
+    "exec-on-window-hide": Parser(\.execOnWindowHide, parseExecList),
     "exec": Parser(\.execConfig, parseExecConfig),
 
     keyMappingConfigRootKey: Parser(\.keyMapping, skipParsing(Config().keyMapping)), // Parsed manually
@@ -266,7 +267,7 @@ private func skipParsing<T>(_ value: T) -> (_ raw: TOMLValueConvertible, _ backt
     { _, _ in .success(value) }
 }
 
-private func parseExecOnWorkspaceChange(_ raw: TOMLValueConvertible, _ backtrace: TomlBacktrace) -> ParsedToml<[String]> {
+private func parseExecList(_ raw: TOMLValueConvertible, _ backtrace: TomlBacktrace) -> ParsedToml<[String]> {
     parseTomlArray(raw, backtrace)
         .flatMap { arr in
             arr.mapAllOrFailure { elem in parseString(elem, backtrace) }

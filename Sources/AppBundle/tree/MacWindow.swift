@@ -119,6 +119,7 @@ final class MacWindow: Window, CustomStringConvertible {
                 topLeftCorner - workspace.workspaceMonitor.rect.topLeftCorner
         }
         _ = setTopLeftCorner(allMonitorsRectsUnion.bottomRightCorner)
+        onWindowHide(self.windowId, true)
     }
 
     func unhideViaEmulation() {
@@ -128,6 +129,7 @@ final class MacWindow: Window, CustomStringConvertible {
         _ = setTopLeftCorner(workspace.workspaceMonitor.rect.topLeftCorner + prevUnhiddenEmulationPositionRelativeToWorkspaceAssignedRect)
 
         self.prevUnhiddenEmulationPositionRelativeToWorkspaceAssignedRect = nil
+        onWindowHide(self.windowId, false)
     }
 
     override var isHiddenViaEmulation: Bool {
@@ -322,5 +324,18 @@ extension WindowDetectedCallback {
             return false
         }
         return true
+    }
+}
+
+private func onWindowHide(_ windowId: UInt32, _ hidden: Bool) {
+    if let exec = config.execOnWindowHide.first {
+        let process = Process()
+        process.executableURL = URL(filePath: exec)
+        process.arguments = Array(config.execOnWindowHide.dropFirst())
+        var environment = config.execConfig.envVariables
+        environment["AEROSPACE_WINDOW_ID"] = String(windowId)
+        environment["AEROSPACE_WINDOW_HIDDEN"] = String(hidden)
+        process.environment = environment
+        Result { try process.run() }.getOrThrow() // todo It's not perfect to fail here
     }
 }
