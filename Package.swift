@@ -14,7 +14,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/Kitura/BlueSocket", exact: "2.0.4"),
-        .package(url: "https://github.com/soffes/HotKey", exact: "0.1.3"),
+        .package(url: "https://github.com/irth/HotKey", exact: "0.2.0"),
         .package(url: "https://github.com/LebJe/TOMLKit", exact: "0.5.5"),
         .package(url: "https://github.com/Quick/Nimble", exact: "12.0.0"),
         .package(url: "https://github.com/apple/swift-collections", exact: "1.1.0"),

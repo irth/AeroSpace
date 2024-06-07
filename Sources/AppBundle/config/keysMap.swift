@@ -4,6 +4,7 @@ import Common
 
 private let minus = "minus"
 private let equal = "equal"
+private let section = "section"
 
 private let q = "q"
 private let w = "w"
@@ -89,6 +90,7 @@ let keyNotationToKeyCode: [String: Key] = [
     comma: .comma,
     period: .period,
     slash: .slash,
+    section: .section,
 
     "0": .zero,
     "1": .one,
@@ -264,6 +266,7 @@ extension Key {
             case .equal: "equal"
             case .grave: "backtick"
             case .minus: "minus"
+            case .section: "section"
             case .space: "space"
             case .tab: "tab"
             case .return: "enter"
